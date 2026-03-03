@@ -1,12 +1,6 @@
 package com.example.demensapp.controller;
-import com.example.demensapp.model.Medication;
-import com.example.demensapp.model.Observation;
-import com.example.demensapp.model.Resident;
-import com.example.demensapp.model.VisitPlan;
-import com.example.demensapp.repository.ObservationRepository;
-import com.example.demensapp.repository.ResidentRepository;
-import com.example.demensapp.repository.MedicationRepository;
-import com.example.demensapp.repository.VisitPlanRepository;
+import com.example.demensapp.model.*;
+import com.example.demensapp.repository.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,16 +13,23 @@ public class ResidentController {
     private final ResidentRepository residentRepository;
     private final ObservationRepository observationRepository;
     private final MedicationRepository medicationRepository;
+    private final EventRepository eventRepository;
 
     private final VisitPlanRepository visitPlanRepository;
 
     public ResidentController(ResidentRepository residentRepository,
                               ObservationRepository observationRepository,
-                              MedicationRepository medicationRepository, VisitPlanRepository visitPlanRepository) {
+                              MedicationRepository medicationRepository, EventRepository eventRepository, VisitPlanRepository visitPlanRepository) {
         this.residentRepository = residentRepository;
         this.observationRepository = observationRepository;
         this.medicationRepository = medicationRepository;
+        this.eventRepository = eventRepository;
         this.visitPlanRepository = visitPlanRepository;
+    }
+    // ResidentController.java eller EventController.java
+    @GetMapping("/{id}/events")
+    public List<Event> getResidentEvents(@PathVariable Long id) {
+        return eventRepository.findByResidentIdOrderByStartTimeDesc(id);
     }
 
     // GET /residents → Alle beboere

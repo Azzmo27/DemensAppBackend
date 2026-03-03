@@ -26,31 +26,31 @@ public class EventService {
         this.userRepository = userRepository;
     }
 
-
     public Event startEvent(Long residentId, EventType type, Long userId) {
-        Resident resident = residentRepository.findById(residentId)
-                .orElseThrow(() -> new RuntimeException("Resident ikke fundet"));
-
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User ikke fundet"));
 
         Event event = new Event();
-        event.setResident(resident);
+        event.setResidentId(residentId);
+        event.setCreatedById(userId);
         event.setType(type);
         event.setStartTime(LocalDateTime.now());
-        event.setCreatedBy(user);
 
         return eventRepository.save(event);
     }
 
+    public Event stopEvent(
+            Long eventId,
+            String description,
+            String helpedBy,
+            String trigger
+    ) {
 
-    public Event stopEvent(Long eventId) {
         Event event = eventRepository.findById(eventId)
-                .orElseThrow(() -> new RuntimeException("Hændelse ikke fundet"));
+                .orElseThrow(() -> new RuntimeException("Event not found"));
 
         event.setEndTime(LocalDateTime.now());
+        event.setDescription(description);
+        event.setHelpedBy(helpedBy);
+        event.setTrigger(trigger);
 
         return eventRepository.save(event);
-    }
-}
-
+    }}

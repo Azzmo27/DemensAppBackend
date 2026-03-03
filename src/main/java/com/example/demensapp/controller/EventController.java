@@ -2,6 +2,7 @@ package com.example.demensapp.controller;
 
 
 
+import com.example.demensapp.dto.StopEventRequest;
 import com.example.demensapp.model.Event;
 import com.example.demensapp.model.EventType;
 import com.example.demensapp.repository.EventRepository;
@@ -33,18 +34,20 @@ public class EventController {
         return eventService.startEvent(residentId, type, userId);
     }
 
-    // ⏹ STOP hændelse
     @PostMapping("/stop/{eventId}")
-    public Event stopEvent(@PathVariable Long eventId) {
-        return eventService.stopEvent(eventId);
+    public Event stopEvent(
+            @PathVariable Long eventId,
+            @RequestBody StopEventRequest request
+    ) {
+        return eventService.stopEvent(
+                eventId,
+                request.getDescription(),
+                request.getHelpedBy(),
+                request.getTrigger()
+        );
     }
 
 
-    // ResidentController.java eller EventController.java
-    @GetMapping("/residents/{id}/events")
-    public List<Event> getResidentEvents(@PathVariable Long id) {
-        return eventRepository.findByResidentIdOrderByStartTimeDesc(id);
-    }
 
 }
 
