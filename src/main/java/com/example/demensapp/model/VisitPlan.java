@@ -1,10 +1,10 @@
 package com.example.demensapp.model;
 
-import com.example.demensapp.model.Resident;
 import jakarta.persistence.*;
 
 @Entity
 public class VisitPlan {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -12,57 +12,53 @@ public class VisitPlan {
     @OneToOne
     private Resident resident;
 
+    // eksisterende felter
+    @Column(length = 2000)
     private String purpose;
+
+    @Column(length = 3000)
     private String support;
+
+    @Column(length = 3000)
     private String actions;
+
+    @Column(length = 3000)
     private String specialAttention;
-    public Long getId() {
-        return id;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    // ✅ NYT: Døgnrytmeplan pr vagt (fold ud i UI)
+    @Column(length = 4000)
+    private String dayPlan;
 
-    public Resident getResident() {
-        return resident;
-    }
+    @Column(length = 4000)
+    private String eveningPlan;
 
-    public void setResident(Resident resident) {
-        this.resident = resident;
-    }
+    @Column(length = 4000)
+    private String nightPlan;
 
-    public String getPurpose() {
-        return purpose;
-    }
+    // getters/setters (lav dem alle)
+    public Long getId() { return id; }
 
-    public void setPurpose(String purpose) {
-        this.purpose = purpose;
-    }
+    public Resident getResident() { return resident; }
+    public void setResident(Resident resident) { this.resident = resident; }
 
-    public String getSupport() {
-        return support;
-    }
+    public String getPurpose() { return purpose; }
+    public void setPurpose(String purpose) { this.purpose = purpose; }
 
-    public void setSupport(String support) {
-        this.support = support;
-    }
+    public String getSupport() { return support; }
+    public void setSupport(String support) { this.support = support; }
 
-    public String getActions() {
-        return actions;
-    }
+    public String getActions() { return actions; }
+    public void setActions(String actions) { this.actions = actions; }
 
-    public void setActions(String actions) {
-        this.actions = actions;
-    }
+    public String getSpecialAttention() { return specialAttention; }
+    public void setSpecialAttention(String specialAttention) { this.specialAttention = specialAttention; }
 
-    public String getSpecialAttention() {
-        return specialAttention;
-    }
+    public String getDayPlan() { return dayPlan; }
+    public void setDayPlan(String dayPlan) { this.dayPlan = dayPlan; }
 
-    public void setSpecialAttention(String specialAttention) {
-        this.specialAttention = specialAttention;
-    }
+    public String getEveningPlan() { return eveningPlan; }
+    public void setEveningPlan(String eveningPlan) { this.eveningPlan = eveningPlan; }
 
-    // getters og setters...
+    public String getNightPlan() { return nightPlan; }
+    public void setNightPlan(String nightPlan) { this.nightPlan = nightPlan; }
 }

@@ -81,5 +81,50 @@ public class ResidentController {
         return visitPlanRepository.findByResidentId(id)
                 .orElse(null); // returner null hvis ingen besøgsplan
     }
+    // ✅ POST /api/residents/{id}/visit-plan  -> opret hvis den ikke findes
+    @PostMapping("/{id}/visit-plan")
+    public VisitPlan createVisitPlan(@PathVariable Long id, @RequestBody VisitPlan body) {
+        Resident resident = residentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Resident not found"));
+
+        VisitPlan vp = new VisitPlan();
+        vp.setResident(resident);
+
+        vp.setPurpose(body.getPurpose());
+        vp.setSupport(body.getSupport());
+        vp.setActions(body.getActions());
+        vp.setSpecialAttention(body.getSpecialAttention());
+
+        vp.setDayPlan(body.getDayPlan());
+        vp.setEveningPlan(body.getEveningPlan());
+        vp.setNightPlan(body.getNightPlan());
+
+        return visitPlanRepository.save(vp);
+    }
+
+    // ✅ PUT /api/residents/{id}/visit-plan -> opdater eksisterende (eller opret hvis mangler)
+    @PutMapping("/{id}/visit-plan")
+    public VisitPlan updateVisitPlan(@PathVariable Long id, @RequestBody VisitPlan body) {
+        Resident resident = residentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Resident not found"));
+
+        VisitPlan vp = visitPlanRepository.findByResidentId(id)
+                .orElseGet(() -> {
+                    VisitPlan n = new VisitPlan();
+                    n.setResident(resident);
+                    return n;
+                });
+
+        vp.setPurpose(body.getPurpose());
+        vp.setSupport(body.getSupport());
+        vp.setActions(body.getActions());
+        vp.setSpecialAttention(body.getSpecialAttention());
+
+        vp.setDayPlan(body.getDayPlan());
+        vp.setEveningPlan(body.getEveningPlan());
+        vp.setNightPlan(body.getNightPlan());
+
+        return visitPlanRepository.save(vp);
+    }
 
 }

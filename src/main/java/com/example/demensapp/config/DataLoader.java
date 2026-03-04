@@ -17,7 +17,6 @@ public class DataLoader {
                                MedicationRepository medicationRepository) {
         return args -> {
 
-            // ➤ Opret testpersonale
             if (userRepository.count() == 0) {
                 User user = new User();
                 user.setName("Test Personale");
@@ -26,42 +25,59 @@ public class DataLoader {
                 userRepository.save(user);
             }
 
-            // ➤ Opret beboer og medicin
             if (residentRepository.count() == 0) {
-                Resident resident = new Resident();
-                resident.setName("Anna Jensen");
-                resident.setRoomNumber("12");
-                residentRepository.save(resident);
 
-                // Medicin
-                Medication med1 = new Medication();
-                med1.setName("Paracetamol 500mg");
-                med1.setDose(String.valueOf(2));
-                med1.setTimeOfDay(TimeOfDay.valueOf("MORGEN"));
-                med1.setResident(resident);  // sæt beboer
-                medicationRepository.save(med1);
+                createResident(residentRepository, medicationRepository,
+                        "Anna Jensen","12","120845-1234");
 
-                Medication med2 = new Medication();
-                med2.setName("Ibuprofen 400mg");
-                med2.setDose(String.valueOf(2));
-                med2.setTimeOfDay(TimeOfDay.valueOf("MIDDAG"));
-                med2.setResident(resident);
-                medicationRepository.save(med2);
+                createResident(residentRepository, medicationRepository,
+                        "Karen Larsen","14","030950-4421");
 
-                Medication med3 = new Medication();
-                med3.setName("slaksijdc 400mg");
-                med3.setDose(String.valueOf(2));
-                med3.setTimeOfDay(TimeOfDay.valueOf("AFTEN"));
-                med3.setResident(resident);
-                medicationRepository.save(med3);
+                createResident(residentRepository, medicationRepository,
+                        "Lise Madsen","16","220343-3321");
 
-                Medication med4 = new Medication();
-                med4.setName("Ibuprofen 400mg, sksk, sjsjjs, ");
-                med4.setDose(String.valueOf(12));
-                med4.setTimeOfDay(TimeOfDay.valueOf("NAT"));
-                med4.setResident(resident);
-                medicationRepository.save(med4);
+                createResident(residentRepository, medicationRepository,
+                        "Jens Nielsen","18","110239-9933");
+
+                createResident(residentRepository, medicationRepository,
+                        "Peter Hansen","20","090847-7712");
+
+                createResident(residentRepository, medicationRepository,
+                        "Ole Sørensen","22","170640-5532");
             }
         };
+    }
+
+    private void createResident(ResidentRepository residentRepository,
+                                MedicationRepository medicationRepository,
+                                String name,
+                                String room,
+                                String cpr) {
+
+        Resident resident = new Resident();
+        resident.setName(name);
+        resident.setRoomNumber(room);
+        resident.setCprNumber(cpr);
+        residentRepository.save(resident);
+
+        createMedication(medicationRepository,resident,"Paracetamol 500mg","2",TimeOfDay.MORGEN);
+        createMedication(medicationRepository,resident,"Vitamin D","1",TimeOfDay.MIDDAG);
+        createMedication(medicationRepository,resident,"Ibuprofen 400mg","1",TimeOfDay.AFTEN);
+        createMedication(medicationRepository,resident,"Melatonin","1",TimeOfDay.NAT);
+    }
+
+    private void createMedication(MedicationRepository medicationRepository,
+                                  Resident resident,
+                                  String name,
+                                  String dose,
+                                  TimeOfDay time){
+
+        Medication med = new Medication();
+        med.setName(name);
+        med.setDose(dose);
+        med.setTimeOfDay(time);
+        med.setResident(resident);
+
+        medicationRepository.save(med);
     }
 }

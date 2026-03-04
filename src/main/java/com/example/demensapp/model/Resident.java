@@ -13,6 +13,8 @@ public class Resident {
     private String roomNumber;
     private boolean active = true;
 
+    private String cprNumber;
+
     // Constructors
     public Resident() {}
 
@@ -27,4 +29,12 @@ public class Resident {
 
     public boolean isActive() { return active; }
     public void setActive(boolean active) { this.active = active; }
+    public String getCprNumber() {
+        return cprNumber;
+    }
+
+    public void setCprNumber(String cprNumber) {
+        this.cprNumber = cprNumber;
+    }
+
 }
